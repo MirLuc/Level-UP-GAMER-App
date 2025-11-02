@@ -57,9 +57,9 @@ fun LoginScreen(
 
     // darkColorScheme  es una funcion de material3 que define un color oscuro
     val ColorScheme = darkColorScheme(
-        primary= Color(0xFF98222E),
-        onPrimary = Color.White,
-        onSurface = Color(0xFF333333), //Gris
+        primary= Color(0xFF00BFFF),
+        onPrimary = Color.Black,
+        onSurface = Color(0xFF00BFFF), // color del texto
     ) // fin dark
 
 
@@ -90,13 +90,13 @@ fun LoginScreen(
                     // Evita que quede oculto
                     .fillMaxSize() // Hace que la columnna tome el todo el tamaño
                     .padding(16.dp)
-                    .background(Color(0xFFF0F0F0)), // gris Claro
+                    .background(Color.Black), // Color del fondo
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally  // Centra horizontalmente
                 //Define  que elementos dentro la columna estaran separados por 20.dp
             )// fin column
             {// inicio Contenido
-                Text(text="Bienvenido !",
+                Text(text="Nivel cargado. por favor, ingresa",
                     style= MaterialTheme.typography.headlineMedium,
                     color=MaterialTheme.colorScheme.primary
 
@@ -109,7 +109,7 @@ fun LoginScreen(
                     contentDescription = "Logo App",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(150.dp),
+                        .height(100.dp),
                     contentScale = ContentScale.Fit
                     // Ajusta la imagen para que encaje dentro del espacio
 
@@ -127,19 +127,10 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.Center
                 )// Fin Row
                 {// Aplica row
-                    Text("texto uno",
-                        style =MaterialTheme.typography.bodyLarge.copy(
-                            color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
-                            fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .padding(end=8.dp)
-                    )// fin texto 1
-
-
-                    Text("texto dos",
+                    Text("Usuario",
                         style =MaterialTheme.typography.bodyLarge.copy(
                             color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
                             fontWeight = FontWeight.Bold),
@@ -158,6 +149,14 @@ fun LoginScreen(
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
+
+                Text("Contraseña",
+                    style =MaterialTheme.typography.bodyLarge.copy(
+                        color=MaterialTheme.colorScheme.onSurface.copy(alpha=0.8f),
+                        fontWeight = FontWeight.Bold),
+                    modifier = Modifier
+                        .padding(end=8.dp)
+                )// fin texto 2
 
                 OutlinedTextField(
                     value=state.password,
