@@ -65,14 +65,12 @@ fun RegisterScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Logo (igual que en Login)
                 Image(
                     painter = painterResource(id = R.drawable.logoduoc),
                     contentDescription = "Level-up Gamer",
                     contentScale = ContentScale.Fit
                 )
 
-                // Campos centrados como en Login
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
@@ -95,10 +93,8 @@ fun RegisterScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
 
-                // Mismo espacio que en Login antes del botón
                 Spacer(modifier = Modifier.height(66.dp))
 
-                // Botón centrado y con el mismo ancho que en Login
                 Button(
                     onClick = {
                         if (username.isNotBlank() && password.isNotBlank()) {

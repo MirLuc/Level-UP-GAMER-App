@@ -54,7 +54,7 @@ fun ProfileScreen(
         )
     }
 
-    // Selector de galería (existente)
+    // Selector de galería
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
@@ -67,7 +67,7 @@ fun ProfileScreen(
         }
     }
 
-    // NUEVO: Lanzador de cámara que guarda en un URI de MediaStore
+    //Lanzador de cámara que guarda en un URI de MediaStore
     val pendingCameraUri = remember { mutableStateOf<Uri?>(null) }
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -149,7 +149,7 @@ fun ProfileScreen(
                     Text("Sin foto de perfil", color = MaterialTheme.colorScheme.primary)
                 }
 
-                // NUEVO: Botón para tomar foto con la cámara
+                // Botón para tomar foto.
                 Button(
                     onClick = {
                         val uri = createImageUri(context)
@@ -166,7 +166,7 @@ fun ProfileScreen(
                     Text("Tomar foto con la cámara")
                 }
 
-                // Botón existente: elegir desde la galería
+                // Elegir desde la galería
                 Button(
                     onClick = { galleryLauncher.launch("image/*") },
                     colors = ButtonDefaults.buttonColors(

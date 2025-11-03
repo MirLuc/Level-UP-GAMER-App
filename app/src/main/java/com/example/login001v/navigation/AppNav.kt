@@ -49,11 +49,11 @@ fun AppNav(){
             val idImagen = backStackEntry.arguments?.getInt("idImagen") ?: android.R.drawable.btn_default
             ProductoFormScreen( navController = navController,  nombre=nombre, precio=precio, idImagen = idImagen)
         }
-        // Registro local
+        // Registro
         composable("register") {
             RegisterScreen(navController = navController)
         }
-        // Perfil (editar foto)
+        // Perfil
         composable(
             route = "profile/{username}",
             arguments = listOf(
