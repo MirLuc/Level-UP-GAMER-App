@@ -72,7 +72,7 @@ fun LoginScreen(
         Scaffold (
             // Crea Estuctra basica de la pantalla Se define topBar, BottomBar
             topBar = {
-                TopAppBar(title = {Text("Mi Primer App",
+                TopAppBar(title = {Text("Level-UP -Gamer",
                     color =MaterialTheme.colorScheme.onPrimary,
                 )})
 
@@ -96,7 +96,7 @@ fun LoginScreen(
                 //Define  que elementos dentro la columna estaran separados por 20.dp
             )// fin column
             {// inicio Contenido
-                Text(text="Nivel cargado. por favor, ingresa",
+                Text(text="Login ",
                     style= MaterialTheme.typography.headlineMedium,
                     color=MaterialTheme.colorScheme.primary
 
