@@ -95,7 +95,7 @@ fun ProductoFormScreen(
 
             // Título y Costo
             Text(text="Ítem: $nombre", style= MaterialTheme.typography.headlineSmall, color = ElectricBlue)
-            Text(text="Costo: $precio Monedas", style= MaterialTheme.typography.bodyLarge, color = Color.White)
+            Text(text="Costo: $$precio CLP", style= MaterialTheme.typography.bodyLarge, color = Color.White)
 
             Spacer(modifier =Modifier. height (16. dp ))
 
