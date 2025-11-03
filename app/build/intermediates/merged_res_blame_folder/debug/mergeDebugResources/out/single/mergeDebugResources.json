@@ -1,67 +1,67 @@
 [
     {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
         "merged": "com.example.login001v.app-debug-47:/drawable_play.jpg.flat",
         "source": "com.example.login001v.app-main-49:/drawable/play.jpg"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\xml_data_extraction_rules.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\xml\\data_extraction_rules.xml"
+        "merged": "com.example.login001v.app-debug-47:/drawable_logoduoc.png.flat",
+        "source": "com.example.login001v.app-main-49:/drawable/logoduoc.png"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-mdpi\\ic_launcher_round.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xxhdpi\\ic_launcher.webp"
+        "merged": "com.example.login001v.app-debug-47:/xml_backup_rules.xml.flat",
+        "source": "com.example.login001v.app-main-49:/xml/backup_rules.xml"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xxxhdpi\\ic_launcher.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-hdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxhdpi/ic_launcher_foreground.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-mdpi\\ic_launcher.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-hdpi\\ic_launcher_round.webp"
-    },
-    {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
-    },
-    {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\drawable_logoduoc.jpg.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\drawable\\logoduoc.jpg"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxxhdpi/ic_launcher_round.webp"
     },
     {
         "merged": "com.example.login001v.app-debug-47:/drawable_silla.jpg.flat",
         "source": "com.example.login001v.app-main-49:/drawable/silla.jpg"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.login001v.app-debug-47:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.login001v.app-main-49:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-hdpi\\ic_launcher.webp"
+        "merged": "com.example.login001v.app-debug-47:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.login001v.app-main-49:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xhdpi\\ic_launcher.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
         "merged": "com.example.login001v.app-debug-47:/drawable_audifonos.jpg.flat",
@@ -72,27 +72,43 @@
         "source": "com.example.login001v.app-main-49:/drawable/mause.webp"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\drawable\\ic_launcher_background.xml"
+        "merged": "com.example.login001v.app-debug-47:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.login001v.app-main-49:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\mipmap-xhdpi\\ic_launcher_round.webp"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
         "merged": "com.example.login001v.app-debug-47:/drawable_pc.jpg.flat",
         "source": "com.example.login001v.app-main-49:/drawable/pc.jpg"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\xml_backup_rules.xml.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\xml\\backup_rules.xml"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-mdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
         "merged": "com.example.login001v.app-debug-47:/drawable_catan.jpg.flat",
         "source": "com.example.login001v.app-main-49:/drawable/catan.jpg"
     },
     {
-        "merged": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-debug-47:\\drawable_logoduoc.png.flat",
-        "source": "C:\\Users\\Usuario\\.gradle\\daemon\\8.13\\com.example.login001v.app-main-49:\\drawable\\logoduoc.png"
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+    },
+    {
+        "merged": "com.example.login001v.app-debug-47:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.login001v.app-main-49:/mipmap-anydpi-v26/ic_launcher_round.xml"
     }
 ]

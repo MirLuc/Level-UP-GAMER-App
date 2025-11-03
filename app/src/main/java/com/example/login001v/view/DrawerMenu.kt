@@ -32,6 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.login001v.R
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material3.Divider
 
 
 val ElectricBlue = Color(0xFF00FFFF)
@@ -40,11 +43,11 @@ val ElectricBlue = Color(0xFF00FFFF)
 fun DrawerMenu(
     username:String,
     navController: NavController
-){
+) {
 
 
     Column(
-        modifier=Modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(Color.Black) // Fondo negro
     )
@@ -62,34 +65,36 @@ fun DrawerMenu(
                 modifier = Modifier.matchParentSize() // Asegura que la imagen llene el Box
             )
 
-            // Texto "Tienda de items de : Cay Pereira"
-            Text(
-                text = "Tienda de items de : $username",
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 8.dp)
-            )
         }
 
         // Items de Navegación
-        LazyColumn (
-            modifier=Modifier
+        LazyColumn(
+            modifier = Modifier
                 .weight(1f)
         )
         {
             item {// juegos de mesa
                 NavigationDrawerItem(
-                    label =  { Text("Juegos de Mesa", color = ElectricBlue) } , // Texto Azul Eléctrico
+                    label = {
+                        Text(
+                            "Juegos de Mesa",
+                            color = ElectricBlue
+                        )
+                    }, // Texto Azul Eléctrico
                     selected = false,
-                    onClick =  {
-                        val nombre= Uri.encode("Juegos de Mesa")
-                        val precio="15000"
+                    onClick = {
+                        val nombre = Uri.encode("Juegos de Mesa")
+                        val precio = "15000"
                         val idImagen = R.drawable.catan
                         navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    } ,
-                    icon =  { Icon(Icons.Default.Casino  , contentDescription = "Juegos de Mesa", tint = ElectricBlue ) }, // Ícono Azul Eléctrico
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.Casino,
+                            contentDescription = "Juegos de Mesa",
+                            tint = ElectricBlue
+                        )
+                    }, // Ícono Azul Eléctrico
                     colors = NavigationDrawerItemDefaults.colors(
                         // Establece el fondo de los ítems a transparente o negro (heredado del padre)
                         unselectedContainerColor = Color.Transparent,
@@ -98,67 +103,139 @@ fun DrawerMenu(
             }
             item { //accesorios
                 NavigationDrawerItem(
-                    label =  { Text("Accesorios", color = ElectricBlue) } ,
+                    label = { Text("Accesorios", color = ElectricBlue) },
                     selected = false,
-                    onClick =  {
-                        val nombre= Uri.encode("Accesorios")
-                        val precio="5000"
+                    onClick = {
+                        val nombre = Uri.encode("Accesorios")
+                        val precio = "5000"
                         val idImagen = R.drawable.mause
                         navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    } ,
-                    icon =  { Icon(Icons.Default.Gamepad  , contentDescription = "Accesorios", tint = ElectricBlue ) },
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.Gamepad,
+                            contentDescription = "Accesorios",
+                            tint = ElectricBlue
+                        )
+                    },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
             item {// Consolas
                 NavigationDrawerItem(
-                    label =  { Text("Consolas", color = ElectricBlue) } ,
+                    label = { Text("Consolas", color = ElectricBlue) },
                     selected = false,
-                    onClick =  {
-                        val nombre= Uri.encode("Consolas")
-                        val precio="300000"
+                    onClick = {
+                        val nombre = Uri.encode("Consolas")
+                        val precio = "300000"
                         val idImagen = R.drawable.play
                         navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    } ,
-                    icon =  { Icon(Icons.Default.VideogameAsset  , contentDescription = "Consolas", tint = ElectricBlue ) },
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.VideogameAsset,
+                            contentDescription = "Consolas",
+                            tint = ElectricBlue
+                        )
+                    },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
             item {// Computadores
                 NavigationDrawerItem(
-                    label =  { Text("Computadores", color = ElectricBlue) } ,
+                    label = { Text("Computadores", color = ElectricBlue) },
                     selected = false,
-                    onClick =  {
-                        val nombre= Uri.encode("Computadores")
-                        val precio="800000"
+                    onClick = {
+                        val nombre = Uri.encode("Computadores")
+                        val precio = "800000"
                         val idImagen = R.drawable.pc
                         navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    } ,
-                    icon =  { Icon(Icons.Default.DesktopWindows  , contentDescription = "PCs", tint = ElectricBlue ) },
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.DesktopWindows,
+                            contentDescription = "PCs",
+                            tint = ElectricBlue
+                        )
+                    },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
             item {
                 NavigationDrawerItem(
-                    label =  { Text("Sillas Gamers", color = ElectricBlue) } ,
+                    label = { Text("Sillas Gamers", color = ElectricBlue) },
                     selected = false,
-                    onClick =  {
-                        val nombre= Uri.encode("Sillas Gamers")
-                        val precio="150000"
+                    onClick = {
+                        val nombre = Uri.encode("Sillas Gamers")
+                        val precio = "150000"
                         val idImagen = R.drawable.silla
                         navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    } ,
-                    icon =  { Icon(Icons.Default.Chair  , contentDescription = "Sillas", tint = ElectricBlue ) },
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.Chair,
+                            contentDescription = "Sillas",
+                            tint = ElectricBlue
+                        )
+                    },
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
+                )
+            }
+            item {
+                NavigationDrawerItem(
+                    label = { Text("Perfil", color = ElectricBlue) },
+                    selected = false,
+                    onClick = {
+                        val user = Uri.encode(username)
+                        navController.navigate("profile/$user")
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.Person,
+                            contentDescription = "Perfil",
+                            tint = ElectricBlue
+                        )
+                    },
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
+                )
+            }
+            item {
+                NavigationDrawerItem(
+                    label = { Text("Cerrar sesión", color = ElectricBlue) },
+                    selected = false,
+                    onClick = {
+                        navController.navigate("login") {
+                            popUpTo("login") { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.Logout,
+                            contentDescription = "Cerrar sesión",
+                            tint = ElectricBlue
+                        )
+                    },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
         }
-
         // Footer
+        Divider(color = ElectricBlue.copy(alpha = 0.3f))
+        // Texto "Tienda de items de : Cay Pereira"
         Text(
-            text="@ 2025 Level-UP Gamer",
-            style=MaterialTheme.typography.bodySmall,
-            modifier=Modifier
+            text = "Tienda de items de : $username",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            color = ElectricBlue,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = "@ 2025 Level-UP Gamer",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             color = ElectricBlue,

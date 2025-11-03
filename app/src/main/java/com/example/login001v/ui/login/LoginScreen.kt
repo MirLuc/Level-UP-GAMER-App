@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.platform.LocalContext
+import android.content.Context
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +56,7 @@ fun LoginScreen(
 
     val state =vm.uiState
     var showPass by remember{mutableStateOf(false)}
+    val context = LocalContext.current
 
     // darkColorScheme  es una funcion de material3 que define un color oscuro
     val ColorScheme = darkColorScheme(
@@ -170,20 +173,20 @@ fun LoginScreen(
                             Text(if (showPass) "Ocultar" else "Ver")
                         }
                     },
-                        modifier = Modifier.fillMaxWidth(0.95f)
+                    modifier = Modifier.fillMaxWidth(0.95f)
 
-            )
+                )
 
 
-            if(state.error !=null   ){
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text=state.error ?:"",
-                color= MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )// fin text
+                if(state.error !=null   ){
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text=state.error ?:"",
+                        color= MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )// fin text
 
-            }// fin state
+                }// fin state
 
 
 
@@ -192,31 +195,45 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(66.dp))
 
                 Button(onClick = {/* accion futura*/
-                vm.submit{
-                  user ->
+                    vm.submit{
+                            user ->
 
 //                    navController.navigate("muestraDatos/$user")  // navega a una pantalla nueva pasando el parametro user
-                    navController.navigate("DrawerMenu/$user")  // navega a una pantalla nueva pasando el parametro user
+                        navController.navigate("DrawerMenu/$user")  // navega a una pantalla nueva pasando el parametro user
 
-                    { // inicio navegate
-                    popUpTo("login"){inclusive = true} //  no volver al login con Back
-                    launchSingleTop = true  // evita que se cree una nueva instancia
+                        { // inicio navegate
+                            popUpTo("login"){inclusive = true} //  no volver al login con Back
+                            launchSingleTop = true  // evita que se cree una nueva instancia
 
-                    } // fin navegate
-                }// fin submit
+                        } // fin navegate
+                    }// fin submit
+                    val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+                    val savedUser = prefs.getString("username", null)
+                    val savedPass = prefs.getString("password", null)
+                    if (state.username.trim() == savedUser && state.password == savedPass) {
+                        navController.navigate("DrawerMenu/${state.username.trim()}") {
+                            popUpTo("login"){ inclusive = true }
+                            launchSingleTop = true
+                        }
+                        return@Button
+                    }
 
                 }, //fin onClick
                     enabled=!state.isLoading,
-                     modifier = Modifier.fillMaxWidth(0.6f)
+                    modifier = Modifier.fillMaxWidth(0.6f)
                 )//fin Button
 
 
                 {
-                   // Text("Presioname")
+                    // Text("Presioname")
 
                     Text( if (state.isLoading)  "Validando" else "Iniciar  sesion"  )
 
                 } // fin boton
+
+                TextButton(onClick = { navController.navigate("register") }) {
+                    Text("Registrarme", color = MaterialTheme.colorScheme.primary)
+                }
 
 
             }// fin Contenido
