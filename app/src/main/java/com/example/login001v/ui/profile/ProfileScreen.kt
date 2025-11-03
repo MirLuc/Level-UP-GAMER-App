@@ -3,6 +3,9 @@ package com.example.login001v.ui.profile
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.content.ContentValues
+import android.os.Build
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -51,7 +54,8 @@ fun ProfileScreen(
         )
     }
 
-    val launcher = rememberLauncherForActivityResult(
+    // Selector de galería (existente)
+    val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         if (uri != null) {
@@ -61,6 +65,38 @@ fun ProfileScreen(
                 .putString("profile_image_uri", uri.toString())
                 .apply()
         }
+    }
+
+    // NUEVO: Lanzador de cámara que guarda en un URI de MediaStore
+    val pendingCameraUri = remember { mutableStateOf<Uri?>(null) }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            pendingCameraUri.value?.let { takenUri ->
+                imageUri = takenUri
+                context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+                    .edit()
+                    .putString("profile_image_uri", takenUri.toString())
+                    .apply()
+            }
+        } else {
+            // Limpieza si la captura falla
+            pendingCameraUri.value?.let { context.contentResolver.delete(it, null, null) }
+        }
+        pendingCameraUri.value = null
+    }
+
+    fun createImageUri(context: Context): Uri? {
+        val resolver = context.contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, "profile_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/LevelUpGamer")
+            }
+        }
+        return resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
     }
 
     val colorScheme = darkColorScheme(
@@ -113,8 +149,26 @@ fun ProfileScreen(
                     Text("Sin foto de perfil", color = MaterialTheme.colorScheme.primary)
                 }
 
+                // NUEVO: Botón para tomar foto con la cámara
                 Button(
-                    onClick = { launcher.launch("image/*") },
+                    onClick = {
+                        val uri = createImageUri(context)
+                        if (uri != null) {
+                            pendingCameraUri.value = uri
+                            cameraLauncher.launch(uri)
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ElectricBlue,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text("Tomar foto con la cámara")
+                }
+
+                // Botón existente: elegir desde la galería
+                Button(
+                    onClick = { galleryLauncher.launch("image/*") },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = ElectricBlue,
                         contentColor = Color.Black

@@ -1,4 +1,4 @@
-#Mon Nov 03 16:59:12 CLST 2025
+#Mon Nov 03 17:04:50 CLST 2025
 base.0=C\:\\Users\\XSLX\\Downloads\\proyectos\\Level-UP-GAMER-App\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\XSLX\\Downloads\\proyectos\\Level-UP-GAMER-App\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.10=C\:\\Users\\XSLX\\Downloads\\proyectos\\Level-UP-GAMER-App\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
