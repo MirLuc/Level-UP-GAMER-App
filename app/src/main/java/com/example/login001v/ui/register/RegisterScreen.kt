@@ -80,7 +80,7 @@ fun RegisterScreen(navController: NavController) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Correo electrónico") },
+                    label = { Text("Usuario") },
                     singleLine = true,
                     isError = username.isNotBlank() && !isEmailValid,
                     supportingText = {
