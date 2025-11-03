@@ -1,11 +1,14 @@
 package com.example.login001v.ui.register
 
 import android.content.Context
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,12 +16,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,10 +36,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.login001v.R
-import androidx.compose.material3.TextButton
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +50,11 @@ fun RegisterScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPass by remember { mutableStateOf(false) }
+
+    // Validación de correo
+    val isEmailValid by remember {
+        derivedStateOf { Patterns.EMAIL_ADDRESS.matcher(username.trim()).matches() }
+    }
 
     MaterialTheme(colorScheme = ColorScheme) {
         Scaffold(
@@ -74,8 +80,14 @@ fun RegisterScreen(navController: NavController) {
                 OutlinedTextField(
                     value = username,
                     onValueChange = { username = it },
-                    label = { Text("Usuario") },
+                    label = { Text("Correo electrónico") },
                     singleLine = true,
+                    isError = username.isNotBlank() && !isEmailValid,
+                    supportingText = {
+                        if (username.isNotBlank() && !isEmailValid) {
+                            Text("Ingresa un correo válido.")
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
 
@@ -97,7 +109,7 @@ fun RegisterScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                        if (username.isNotBlank() && password.isNotBlank()) {
+                        if (isEmailValid && password.isNotBlank()) {
                             val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
                             prefs.edit()
                                 .putString("username", username.trim())
@@ -106,6 +118,7 @@ fun RegisterScreen(navController: NavController) {
                             navController.popBackStack() // volver al Login
                         }
                     },
+                    enabled = isEmailValid && password.isNotBlank(),
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
                         .align(Alignment.CenterHorizontally)
