@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.login001v.viewmodel.PostViewModelStateTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-12-01T21:27:37.343Z" hostname="DESKTOP-BP8BC5O" time="0.204">
-  <properties/>
-  <testcase name="test básico de ejemplo()" classname="com.example.login001v.viewmodel.PostViewModelStateTest" time="0.04"/>
-  <testcase name="postList contiene datos esperados al inicializar el FakeVM()" classname="com.example.login001v.viewmodel.PostViewModelStateTest" time="0.163"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

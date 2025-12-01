@@ -78,6 +78,7 @@ dependencies {
 
     // Corrutinas para trabajo asincrónico (esencial para Retrofit y ViewModel)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
 
     // -----------------------------------------------------------------

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<testsuite name="com.example.login001v.ui.home.PostScreenTest" tests="1" failures="0" errors="0" skipped="0" time="4.037" timestamp="2025-12-01T20:26:45" hostname="localhost">
-  <properties>
-    <property name="device" value="Medium_Phone_API_36.0(AVD) - 16" />
-    <property name="flavor" value="" />
-    <property name="project" value=":app" />
-  </properties>
-  <testcase name="el_titulo_de_post_debe_aparecer_en_pantalla" classname="com.example.login001v.ui.home.PostScreenTest" time="2.554" />
-</testsuite>

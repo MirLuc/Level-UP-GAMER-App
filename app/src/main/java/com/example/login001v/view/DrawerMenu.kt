@@ -58,6 +58,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
+// IMPORTS ADICIONALES PARA LA SECCIÓN DE NOTICIAS CON IMÁGENES
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.Divider
+import coil.compose.AsyncImage
+import androidx.compose.ui.graphics.Brush
+
 data class DrawerMenuItem(
     val title: String,
     val icon: ImageVector,
@@ -129,6 +145,20 @@ fun DrawerMenu(
                         text = "Contenido Principal (Desliza para ver el menú)",
                         modifier = Modifier.align(Alignment.Center)
                     )
+
+                    // INSERCIÓN: SECCIÓN DE NOTICIAS DEBAJO DEL TEXTO EXISTENTE
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Spacer(modifier = Modifier.height(56.dp))
+                        NewsSection(
+                            title = "Noticias de Gaming",
+                            query = "gaming"
+                        )
+                    }
                 }
             }
         }
@@ -301,6 +331,248 @@ fun DrawerContent(
             color = ElectricBlue,
             textAlign = TextAlign.Center
         )
+    }
+}
+
+/* -----------------------------
+   Sección de Noticias (API) con imagen de fondo
+------------------------------ */
+
+data class NewsItem(
+    val title: String,
+    val url: String,
+    val imageUrl: String? = null
+)
+
+@Composable
+fun NewsSection(
+    title: String,
+    query: String
+) {
+    val scope = rememberCoroutineScope()
+    var loading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var news by remember { mutableStateOf<List<NewsItem>>(emptyList()) }
+
+    LaunchedEffect(query) {
+        loading = true
+        error = null
+        news = emptyList()
+        scope.launch {
+            val result = fetchNewsWithImages(query)
+            if (result.isSuccess) {
+                news = result.getOrNull().orEmpty()
+                loading = false
+            } else {
+                error = result.exceptionOrNull()?.message ?: "Error desconocido"
+                loading = false
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = ElectricBlue // azul claro para el título de la sección
+        )
+        Spacer(Modifier.height(8.dp))
+
+        when {
+            loading -> {
+                CircularProgressIndicator()
+            }
+            error != null -> {
+                Text(
+                    text = "No se pudieron cargar las noticias: ${error}",
+                    color = ElectricBlue // azul claro en mensajes
+                )
+            }
+            news.isEmpty() -> {
+                Text(text = "No hay noticias disponibles.", color = ElectricBlue)
+            }
+            else -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(vertical = 8.dp)
+                ) {
+                    items(news) { item ->
+                        NewsCard(item = item)
+                        Divider(color = ElectricBlue.copy(alpha = 0.2f))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NewsCard(item: NewsItem) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(160.dp)
+            .padding(vertical = 8.dp)
+    ) {
+        // Imagen de fondo (si existe)
+        AsyncImage(
+            model = item.imageUrl,
+            contentDescription = "Imagen de noticia",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.matchParentSize()
+        )
+
+        // Overlay para mejorar legibilidad
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Black.copy(alpha = 0.10f),
+                            Color.Black.copy(alpha = 0.35f)
+                        )
+                    )
+                )
+        )
+
+        // Título en azul claro
+        Text(
+            text = item.title.ifBlank { "Sin título" },
+            style = MaterialTheme.typography.bodyLarge,
+            color = ElectricBlue,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(12.dp)
+        )
+
+        // URL en azul claro (más tenue)
+        Text(
+            text = item.url,
+            style = MaterialTheme.typography.bodySmall,
+            color = ElectricBlue.copy(alpha = 0.85f),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(12.dp)
+        )
+    }
+}
+
+/* -----------------------------
+   Lógica de datos: Fetch de noticias y og:image
+------------------------------ */
+
+suspend fun fetchNewsWithImages(query: String): Result<List<NewsItem>> {
+    return try {
+        // Primero obtenemos las noticias (título + url)
+        val baseNews = fetchNews(query).getOrElse { return Result.failure(it) }
+
+        // Limitamos para no disparar demasiadas peticiones (ajusta según necesidad)
+        val limited = baseNews.take(10)
+
+        // Obtenemos la imagen og:image por cada noticia en IO
+        val withImages = withContext(Dispatchers.IO) {
+            limited.map { item ->
+                val img = fetchOgImage(item.url)
+                item.copy(imageUrl = img)
+            }
+        }
+
+        Result.success(withImages)
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+}
+
+// Obtiene el HTML y extrae meta og:image o twitter:image
+suspend fun fetchOgImage(pageUrl: String): String? {
+    return try {
+        val html = withContext(Dispatchers.IO) {
+            val url = URL(pageUrl)
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connectTimeout = 8000
+            conn.readTimeout = 8000
+            conn.setRequestProperty("Accept", "text/html")
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Android) LevelUPGamerApp")
+
+            val code = conn.responseCode
+            val stream = if (code in 200..299) conn.inputStream else conn.errorStream
+            val reader = BufferedReader(InputStreamReader(stream))
+            val content = buildString {
+                var line: String?
+                while (true) {
+                    line = reader.readLine()
+                    if (line == null) break
+                    append(line)
+                }
+            }
+            reader.close()
+            conn.disconnect()
+            content
+        }
+
+        // Búsqueda simple por meta tags
+        val ogRegex = Regex("""<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']""", RegexOption.IGNORE_CASE)
+        val twRegex = Regex("""<meta\s+name=["']twitter:image["']\s+content=["']([^"']+)["']""", RegexOption.IGNORE_CASE)
+
+        val ogMatch = ogRegex.find(html)?.groupValues?.getOrNull(1)
+        val twMatch = twRegex.find(html)?.groupValues?.getOrNull(1)
+
+        ogMatch ?: twMatch
+    } catch (_: Exception) {
+        null
+    }
+}
+
+// Mantiene la llamada original a Hacker News Algolia
+suspend fun fetchNews(query: String): Result<List<NewsItem>> {
+    return try {
+        val apiUrl = "https://hn.algolia.com/api/v1/search?query=${Uri.encode(query)}&tags=story"
+        val response = withContext(Dispatchers.IO) {
+            val url = URL(apiUrl)
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.connectTimeout = 8000
+            conn.readTimeout = 8000
+            conn.setRequestProperty("Accept", "application/json")
+
+            val code = conn.responseCode
+            val stream = if (code in 200..299) conn.inputStream else conn.errorStream
+            val reader = BufferedReader(InputStreamReader(stream))
+            val content = buildString {
+                var line: String?
+                while (true) {
+                    line = reader.readLine()
+                    if (line == null) break
+                    append(line)
+                }
+            }
+            reader.close()
+            conn.disconnect()
+            content
+        }
+
+        val json = JSONObject(response)
+        val hits = json.optJSONArray("hits")
+        val resultList = mutableListOf<NewsItem>()
+        if (hits != null) {
+            for (i in 0 until hits.length()) {
+                val obj = hits.optJSONObject(i) ?: continue
+                val title = obj.optString("title", obj.optString("story_title", ""))
+                val url = obj.optString("url", obj.optString("story_url", ""))
+                if (title.isNotBlank() && url.isNotBlank()) {
+                    resultList.add(NewsItem(title = title, url = url))
+                }
+            }
+        }
+
+        Result.success(resultList)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 }
 
