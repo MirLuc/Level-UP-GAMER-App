@@ -1,28 +1,47 @@
 package com.example.login001v.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.login001v.data.model.Producto
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.login001v.data.repository.ProductoRepository
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ProductoViewModel: ViewModel(){
+data class ProductoUiState(
+    val productoList: List<Producto> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
+)
 
-    private val _producto = MutableStateFlow<List<Producto>>(emptyList())
-    val productos: StateFlow<List<Producto>> = _producto.asStateFlow()
+class ProductoViewModel(private val repository: ProductoRepository) : ViewModel() {
 
-    fun guardarProducto(producto:Producto){
+    val uiState: StateFlow<ProductoUiState> = repository.allProducts
+        .map { ProductoUiState(productoList = it) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ProductoUiState(isLoading = true)
+        )
 
-        viewModelScope.launch {
-            // guardar en memoria
-            val nuevaLista = _producto.value + producto
-            _producto.value =nuevaLista
+    fun insert(producto: Producto) = viewModelScope.launch {
+        repository.insert(producto)
+    }
 
-        }// fin Scope
-    }// fin guardar
+    fun deleteAll() = viewModelScope.launch {
+        repository.deleteAll()
+    }
+}
 
-
-
-}// fin viewmodel
+class ProductoViewModelFactory(private val repository: ProductoRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ProductoViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ProductoViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

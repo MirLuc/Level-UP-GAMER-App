@@ -1,11 +1,12 @@
 package com.example.login001v.data.repository
 
-import com.example.login001v.data.model.Credential
+class AuthRepository {
 
-class AuthRepository(
-    private val validCredential: Credential =Credential.Admin
-){
-    fun login(username:String, password:String): Boolean{
-        return username == validCredential.username  && password == validCredential.password
+    fun login(username: String, password: String): String {
+        return if (username.trim() == "user" && password == "pass") {
+            username.trim()
+        } else {
+            throw IllegalArgumentException("Credenciales inválidas")
+        }
     }
 }

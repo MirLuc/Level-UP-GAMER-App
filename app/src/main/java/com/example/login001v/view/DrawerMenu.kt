@@ -5,189 +5,229 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Casino
 import androidx.compose.material.icons.filled.Chair
 import androidx.compose.material.icons.filled.DesktopWindows
 import androidx.compose.material.icons.filled.Gamepad
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.VideogameAsset
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.login001v.R
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material3.Divider
+import com.example.login001v.data.dao.ProductoDao
+import com.example.login001v.data.model.Producto
+import com.example.login001v.data.repository.ProductoRepository
+import com.example.login001v.viewmodel.ProductoViewModelFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
+data class DrawerMenuItem(
+    val title: String,
+    val icon: ImageVector,
+    val route: String,
+    val price: String,
+    val idImagen: Int
+)
 
-val ElectricBlue = Color(0xFF00FFFF)
+val ElectricBlue = Color(0xFF64B5F6)
+
+val menuItems = listOf(
+    DrawerMenuItem("Juegos de Mesa", Icons.Default.Casino, "juegos", "15000", R.drawable.ic_launcher_foreground),
+    DrawerMenuItem("Accesorios", Icons.Default.Gamepad, "accesorios", "5000", R.drawable.ic_launcher_foreground),
+    DrawerMenuItem("Consolas", Icons.Default.VideogameAsset, "consolas", "300000", R.drawable.ic_launcher_foreground),
+    DrawerMenuItem("Computadores", Icons.Default.DesktopWindows, "computadores", "800000", R.drawable.ic_launcher_foreground),
+    DrawerMenuItem("Sillas Gamers", Icons.Default.Chair, "sillas", "150000", R.drawable.ic_launcher_foreground),
+)
 
 @Composable
 fun DrawerMenu(
-    username:String,
-    navController: NavController
+    username: String,
+    navController: NavController,
+    productoViewModelFactory: ProductoViewModelFactory
 ) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black) // Fondo negro
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            DrawerContent(
+                username = username,
+                navController = navController,
+                onItemClick = { route, nombre, precio, idImagen ->
+                    scope.launch { drawerState.close() }
+                    if (nombre.isNotEmpty()) {
+                        val encodedNombre = Uri.encode(nombre)
+                        navController.navigate("ProductoFormScreen/$encodedNombre/$precio/$idImagen")
+                    } else if (route == "MuestraDatosScreen") {
+                        navController.navigate(route)
+                    } else if (route.startsWith("profile")) {
+                        navController.navigate(route)
+                    }
+                }
+            )
+        },
+        content = {
+            Scaffold(
+                topBar = {
+                    CustomTopAppBar(
+                        title = "Bienvenido $username",
+                        onMenuClick = {
+                            scope.launch {
+                                drawerState.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Text(
+                        text = "Contenido Principal (Desliza para ver el menú)",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+        }
     )
-    {
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTopAppBar(title: String, onMenuClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(title) },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary, titleContentColor = MaterialTheme.colorScheme.onPrimary),
+        navigationIcon = {
+            IconButton(onClick = onMenuClick) {
+                Icon(Icons.Filled.Menu, contentDescription = "Menú", tint = MaterialTheme.colorScheme.onPrimary)
+            }
+        }
+    )
+}
+
+@Composable
+fun DrawerContent(
+    username: String,
+    navController: NavController,
+    onItemClick: (String, String, String, Int) -> Unit
+) {
+    ModalDrawerSheet(
+        modifier = Modifier.fillMaxWidth(0.7f)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(200.dp)
+                .background(ElectricBlue),
+            contentAlignment = Alignment.BottomStart
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logoduoc),
-                contentDescription = "Level-up Gamer",
-                contentScale = ContentScale.Crop, // Para que cubra el área sin deformarse
-                modifier = Modifier.matchParentSize() // Asegura que la imagen llene el Box
-            )
-
+            Column(modifier = Modifier.padding(16.dp)) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = "Logo",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(80.dp)
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = username,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
+            }
         }
 
-        // Items de Navegación
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-        )
-        {
-            item {// juegos de mesa
+        Spacer(Modifier.height(16.dp))
+
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(menuItems.size) { index ->
+                val item = menuItems[index]
                 NavigationDrawerItem(
-                    label = {
-                        Text(
-                            "Juegos de Mesa",
-                            color = ElectricBlue
-                        )
-                    }, // Texto Azul Eléctrico
+                    label = { Text(item.title, color = ElectricBlue) },
                     selected = false,
                     onClick = {
-                        val nombre = Uri.encode("Juegos de Mesa")
-                        val precio = "15000"
-                        val idImagen = R.drawable.catan
-                        navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
+                        onItemClick(item.route, item.title, item.price, item.idImagen)
                     },
                     icon = {
-                        Icon(
-                            Icons.Default.Casino,
-                            contentDescription = "Juegos de Mesa",
-                            tint = ElectricBlue
-                        )
-                    }, // Ícono Azul Eléctrico
-                    colors = NavigationDrawerItemDefaults.colors(
-                        // Establece el fondo de los ítems a transparente o negro (heredado del padre)
-                        unselectedContainerColor = Color.Transparent,
-                    )
-                )
-            }
-            item { //accesorios
-                NavigationDrawerItem(
-                    label = { Text("Accesorios", color = ElectricBlue) },
-                    selected = false,
-                    onClick = {
-                        val nombre = Uri.encode("Accesorios")
-                        val precio = "5000"
-                        val idImagen = R.drawable.mause
-                        navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    },
-                    icon = {
-                        Icon(
-                            Icons.Default.Gamepad,
-                            contentDescription = "Accesorios",
-                            tint = ElectricBlue
-                        )
+                        Icon(item.icon, contentDescription = item.title, tint = ElectricBlue)
                     },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
-            item {// Consolas
-                NavigationDrawerItem(
-                    label = { Text("Consolas", color = ElectricBlue) },
-                    selected = false,
-                    onClick = {
-                        val nombre = Uri.encode("Consolas")
-                        val precio = "300000"
-                        val idImagen = R.drawable.play
-                        navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    },
-                    icon = {
-                        Icon(
-                            Icons.Default.VideogameAsset,
-                            contentDescription = "Consolas",
-                            tint = ElectricBlue
-                        )
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
+
+            item {
+                HorizontalDivider(color = ElectricBlue.copy(alpha = 0.3f), modifier = Modifier.padding(vertical = 8.dp))
             }
-            item {// Computadores
-                NavigationDrawerItem(
-                    label = { Text("Computadores", color = ElectricBlue) },
-                    selected = false,
-                    onClick = {
-                        val nombre = Uri.encode("Computadores")
-                        val precio = "800000"
-                        val idImagen = R.drawable.pc
-                        navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
-                    },
-                    icon = {
-                        Icon(
-                            Icons.Default.DesktopWindows,
-                            contentDescription = "PCs",
-                            tint = ElectricBlue
-                        )
-                    },
-                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
-                )
-            }
+
             item {
                 NavigationDrawerItem(
-                    label = { Text("Sillas Gamers", color = ElectricBlue) },
+                    label = { Text("Mostrar Datos Guardados", color = ElectricBlue) },
                     selected = false,
                     onClick = {
-                        val nombre = Uri.encode("Sillas Gamers")
-                        val precio = "150000"
-                        val idImagen = R.drawable.silla
-                        navController.navigate("ProductoFormScreen/$nombre/$precio/$idImagen")
+                        onItemClick("MuestraDatosScreen", "", "", 0)
                     },
                     icon = {
                         Icon(
-                            Icons.Default.Chair,
-                            contentDescription = "Sillas",
+                            Icons.Default.Archive,
+                            contentDescription = "Datos Guardados",
                             tint = ElectricBlue
                         )
                     },
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
+
             item {
                 NavigationDrawerItem(
                     label = { Text("Perfil", color = ElectricBlue) },
                     selected = false,
                     onClick = {
-                        val user = Uri.encode(username)
-                        navController.navigate("profile/$user")
+                        onItemClick("profile/$username", "", "", 0)
                     },
                     icon = {
                         Icon(
@@ -199,6 +239,7 @@ fun DrawerMenu(
                     colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
                 )
             }
+
             item {
                 NavigationDrawerItem(
                     label = { Text("Cerrar sesión", color = ElectricBlue) },
@@ -211,7 +252,7 @@ fun DrawerMenu(
                     },
                     icon = {
                         Icon(
-                            Icons.Default.Logout,
+                            Icons.AutoMirrored.Filled.Logout,
                             contentDescription = "Cerrar sesión",
                             tint = ElectricBlue
                         )
@@ -220,9 +261,9 @@ fun DrawerMenu(
                 )
             }
         }
-        // Footer
-        Divider(color = ElectricBlue.copy(alpha = 0.3f))
-        // Texto "Tienda de items de : Cay Pereira"
+
+        HorizontalDivider(color = ElectricBlue.copy(alpha = 0.3f))
+
         Text(
             text = "Tienda de items de : $username",
             style = MaterialTheme.typography.bodySmall,
@@ -243,9 +284,21 @@ fun DrawerMenu(
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun DrawerMenuPreview(){
-    val navController = androidx.navigation.compose.rememberNavController()
-    DrawerMenu(username = "Cay Pereira", navController = navController)
+fun DrawerMenuPreview() {
+    val navController = rememberNavController()
+
+    val dummyDao = object : ProductoDao {
+        override fun getAll(): Flow<List<Producto>> = flowOf(emptyList())
+        override suspend fun insert(producto: Producto) {}
+        override suspend fun deleteAll() {}
+    }
+
+    val dummyRepository = ProductoRepository(dummyDao)
+
+    val dummyFactory = ProductoViewModelFactory(dummyRepository)
+
+    DrawerMenu(username = "Cay Pereira", navController = navController, productoViewModelFactory = dummyFactory)
 }
