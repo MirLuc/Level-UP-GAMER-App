@@ -6,6 +6,7 @@ import androidx.room.CoroutinesRoom;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -32,13 +33,15 @@ public final class ProductoDao_Impl implements ProductoDao {
 
   private final EntityInsertionAdapter<Producto> __insertionAdapterOfProducto;
 
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
+
   public ProductoDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
     this.__insertionAdapterOfProducto = new EntityInsertionAdapter<Producto>(__db) {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR ABORT INTO `productos` (`id`,`nombre`,`precio`,`cantidad`,`direccion`,`conPapas`,`agrandarBebida`) VALUES (nullif(?, 0),?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `productos` (`id`,`nombre`,`precio`,`idImagen`) VALUES (nullif(?, 0),?,?,?)";
       }
 
       @Override
@@ -55,27 +58,21 @@ public final class ProductoDao_Impl implements ProductoDao {
         } else {
           statement.bindString(3, entity.getPrecio());
         }
-        if (entity.getCantidad() == null) {
-          statement.bindNull(4);
-        } else {
-          statement.bindString(4, entity.getCantidad());
-        }
-        if (entity.getDireccion() == null) {
-          statement.bindNull(5);
-        } else {
-          statement.bindString(5, entity.getDireccion());
-        }
-        final int _tmp = entity.getConPapas() ? 1 : 0;
-        statement.bindLong(6, _tmp);
-        final int _tmp_1 = entity.getAgrandarBebida() ? 1 : 0;
-        statement.bindLong(7, _tmp_1);
+        statement.bindLong(4, entity.getIdImagen());
+      }
+    };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM productos";
+        return _query;
       }
     };
   }
 
   @Override
-  public Object insertarProducto(final Producto producto,
-      final Continuation<? super Unit> $completion) {
+  public Object insert(final Producto producto, final Continuation<? super Unit> $completion) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -93,8 +90,31 @@ public final class ProductoDao_Impl implements ProductoDao {
   }
 
   @Override
-  public Flow<List<Producto>> obtenerProductos() {
-    final String _sql = "SELECT * FROM productos";
+  public Object deleteAll(final Continuation<? super Unit> $completion) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      @NonNull
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+        try {
+          __db.beginTransaction();
+          try {
+            _stmt.executeUpdateDelete();
+            __db.setTransactionSuccessful();
+            return Unit.INSTANCE;
+          } finally {
+            __db.endTransaction();
+          }
+        } finally {
+          __preparedStmtOfDeleteAll.release(_stmt);
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Flow<List<Producto>> getAll() {
+    final String _sql = "SELECT * FROM productos ORDER BY nombre ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return CoroutinesRoom.createFlow(__db, false, new String[] {"productos"}, new Callable<List<Producto>>() {
       @Override
@@ -105,10 +125,7 @@ public final class ProductoDao_Impl implements ProductoDao {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfNombre = CursorUtil.getColumnIndexOrThrow(_cursor, "nombre");
           final int _cursorIndexOfPrecio = CursorUtil.getColumnIndexOrThrow(_cursor, "precio");
-          final int _cursorIndexOfCantidad = CursorUtil.getColumnIndexOrThrow(_cursor, "cantidad");
-          final int _cursorIndexOfDireccion = CursorUtil.getColumnIndexOrThrow(_cursor, "direccion");
-          final int _cursorIndexOfConPapas = CursorUtil.getColumnIndexOrThrow(_cursor, "conPapas");
-          final int _cursorIndexOfAgrandarBebida = CursorUtil.getColumnIndexOrThrow(_cursor, "agrandarBebida");
+          final int _cursorIndexOfIdImagen = CursorUtil.getColumnIndexOrThrow(_cursor, "idImagen");
           final List<Producto> _result = new ArrayList<Producto>(_cursor.getCount());
           while (_cursor.moveToNext()) {
             final Producto _item;
@@ -126,27 +143,9 @@ public final class ProductoDao_Impl implements ProductoDao {
             } else {
               _tmpPrecio = _cursor.getString(_cursorIndexOfPrecio);
             }
-            final String _tmpCantidad;
-            if (_cursor.isNull(_cursorIndexOfCantidad)) {
-              _tmpCantidad = null;
-            } else {
-              _tmpCantidad = _cursor.getString(_cursorIndexOfCantidad);
-            }
-            final String _tmpDireccion;
-            if (_cursor.isNull(_cursorIndexOfDireccion)) {
-              _tmpDireccion = null;
-            } else {
-              _tmpDireccion = _cursor.getString(_cursorIndexOfDireccion);
-            }
-            final boolean _tmpConPapas;
-            final int _tmp;
-            _tmp = _cursor.getInt(_cursorIndexOfConPapas);
-            _tmpConPapas = _tmp != 0;
-            final boolean _tmpAgrandarBebida;
-            final int _tmp_1;
-            _tmp_1 = _cursor.getInt(_cursorIndexOfAgrandarBebida);
-            _tmpAgrandarBebida = _tmp_1 != 0;
-            _item = new Producto(_tmpId,_tmpNombre,_tmpPrecio,_tmpCantidad,_tmpDireccion,_tmpConPapas,_tmpAgrandarBebida);
+            final int _tmpIdImagen;
+            _tmpIdImagen = _cursor.getInt(_cursorIndexOfIdImagen);
+            _item = new Producto(_tmpId,_tmpNombre,_tmpPrecio,_tmpIdImagen);
             _result.add(_item);
           }
           return _result;

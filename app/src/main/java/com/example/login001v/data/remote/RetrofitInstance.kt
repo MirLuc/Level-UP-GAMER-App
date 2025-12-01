@@ -4,11 +4,10 @@ import com.example.login001v.remote.ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitInstance {
+object RetrofitClient {
     private const val BASE_URL = "https://jsonplaceholder.typicode.com"
 
-    // Se instancia el servicio de la Api
-    val api : ApiService by lazy{
+    val apiService: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

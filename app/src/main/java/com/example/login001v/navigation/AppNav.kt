@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.login001v.ui.home.MuestraDatosScreen
+import com.example.login001v.ui.home.PostScreen
 import com.example.login001v.ui.login.LoginScreen
 import com.example.login001v.view.DrawerMenu
 import com.example.login001v.view.ProductoFormScreen
@@ -80,6 +81,9 @@ fun AppNav(
         }
         composable("MuestraDatosScreen") {
             MuestraDatosScreen(factory = productoViewModelFactory)
+        }
+        composable("PostScreen") {
+            PostScreen()
         }
     }
 }

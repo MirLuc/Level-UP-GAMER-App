@@ -1,13 +1,10 @@
-package com.example.login001v.repository
+package com.example.login001v.data.repository
 
 import com.example.login001v.data.model.Post
-import com.example.login001v.data.remote.RetrofitInstance
+import com.example.login001v.data.remote.RetrofitClient
 
 class PostRepository {
-
-    // Función suspendida para obtener los post desde la API
-    suspend fun getPosts(): List<Post>{
-        return RetrofitInstance.api.getPosts()
+    suspend fun getPosts(): List<Post> {
+        return RetrofitClient.apiService.getPosts()
     }
-
 }

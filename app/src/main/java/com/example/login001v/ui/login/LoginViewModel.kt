@@ -6,13 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.login001v.data.repository.AuthRepository
 
-data class LoginUiState(
-    val username: String = "",
-    val password: String = "",
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
-
 class LoginViewModel(
     private val repo: AuthRepository = AuthRepository()
 ) : ViewModel() {

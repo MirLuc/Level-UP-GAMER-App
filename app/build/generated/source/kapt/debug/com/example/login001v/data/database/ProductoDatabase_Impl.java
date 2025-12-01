@@ -27,7 +27,7 @@ import javax.annotation.processing.Generated;
 
 @Generated("androidx.room.RoomProcessor")
 @SuppressWarnings({"unchecked", "deprecation"})
-public final class ProductoDatabase_Impl extends ProductoDatabase {
+public final class ProductoDataBase_Impl extends ProductoDataBase {
   private volatile ProductoDao _productoDao;
 
   @Override
@@ -36,9 +36,9 @@ public final class ProductoDatabase_Impl extends ProductoDatabase {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `productos` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT NOT NULL, `precio` TEXT NOT NULL, `cantidad` TEXT NOT NULL, `direccion` TEXT NOT NULL, `conPapas` INTEGER NOT NULL, `agrandarBebida` INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `productos` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombre` TEXT NOT NULL, `precio` TEXT NOT NULL, `idImagen` INTEGER NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cf95eeb869466dfb08255887b87e84f6')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '712739ea0ce346a9821e42744b26f750')");
       }
 
       @Override
@@ -87,14 +87,11 @@ public final class ProductoDatabase_Impl extends ProductoDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsProductos = new HashMap<String, TableInfo.Column>(7);
+        final HashMap<String, TableInfo.Column> _columnsProductos = new HashMap<String, TableInfo.Column>(4);
         _columnsProductos.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsProductos.put("nombre", new TableInfo.Column("nombre", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsProductos.put("precio", new TableInfo.Column("precio", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsProductos.put("cantidad", new TableInfo.Column("cantidad", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsProductos.put("direccion", new TableInfo.Column("direccion", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsProductos.put("conPapas", new TableInfo.Column("conPapas", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsProductos.put("agrandarBebida", new TableInfo.Column("agrandarBebida", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsProductos.put("idImagen", new TableInfo.Column("idImagen", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysProductos = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesProductos = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoProductos = new TableInfo("productos", _columnsProductos, _foreignKeysProductos, _indicesProductos);
@@ -106,7 +103,7 @@ public final class ProductoDatabase_Impl extends ProductoDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "cf95eeb869466dfb08255887b87e84f6", "81a69be3e259a31c87f0c3f19fb8e2ca");
+    }, "712739ea0ce346a9821e42744b26f750", "03a02292a5b833f76147ba5074f0972b");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

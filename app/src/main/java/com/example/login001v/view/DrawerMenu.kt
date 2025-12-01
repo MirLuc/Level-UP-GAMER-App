@@ -72,7 +72,6 @@ val menuItems = listOf(
     DrawerMenuItem("Juegos de Mesa", Icons.Default.Casino, "juegos", "15000", R.drawable.ic_launcher_foreground),
     DrawerMenuItem("Accesorios", Icons.Default.Gamepad, "accesorios", "5000", R.drawable.ic_launcher_foreground),
     DrawerMenuItem("Consolas", Icons.Default.VideogameAsset, "consolas", "300000", R.drawable.ic_launcher_foreground),
-    DrawerMenuItem("Computadores", Icons.Default.DesktopWindows, "computadores", "800000", R.drawable.ic_launcher_foreground),
     DrawerMenuItem("Sillas Gamers", Icons.Default.Chair, "sillas", "150000", R.drawable.ic_launcher_foreground),
 )
 
@@ -97,6 +96,8 @@ fun DrawerMenu(
                         val encodedNombre = Uri.encode(nombre)
                         navController.navigate("ProductoFormScreen/$encodedNombre/$precio/$idImagen")
                     } else if (route == "MuestraDatosScreen") {
+                        navController.navigate(route)
+                    } else if (route == "PostScreen") {
                         navController.navigate(route)
                     } else if (route.startsWith("profile")) {
                         navController.navigate(route)
@@ -202,6 +203,24 @@ fun DrawerContent(
 
             item {
                 HorizontalDivider(color = ElectricBlue.copy(alpha = 0.3f), modifier = Modifier.padding(vertical = 8.dp))
+            }
+
+            item {
+                NavigationDrawerItem(
+                    label = { Text("Posts API Externa", color = ElectricBlue) },
+                    selected = false,
+                    onClick = {
+                        onItemClick("PostScreen", "", "", 0)
+                    },
+                    icon = {
+                        Icon(
+                            Icons.Default.DesktopWindows,
+                            contentDescription = "Posts API Externa",
+                            tint = ElectricBlue
+                        )
+                    },
+                    colors = NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent)
+                )
             }
 
             item {
