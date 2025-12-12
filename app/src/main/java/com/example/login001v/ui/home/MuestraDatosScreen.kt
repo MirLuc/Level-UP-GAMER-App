@@ -25,7 +25,7 @@ fun MuestraDatosScreen(factory: ProductoViewModelFactory) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Productos Guardados") }
+                title = { Text(text = "Carrito") }
             )
         }
     ) { innerPadding ->
@@ -39,7 +39,7 @@ fun MuestraDatosScreen(factory: ProductoViewModelFactory) {
             if (uiState.isLoading) {
                 CircularProgressIndicator()
             } else if (uiState.productoList.isEmpty()) {
-                Text("No hay productos guardados.", style = MaterialTheme.typography.bodyLarge)
+                Text("No hay productos en el carrito.", style = MaterialTheme.typography.bodyLarge)
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),

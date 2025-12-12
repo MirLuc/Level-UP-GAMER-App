@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Casino
@@ -57,8 +58,7 @@ import com.example.login001v.viewmodel.ProductoViewModelFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-
-// IMPORTS ADICIONALES PARA LA SECCIÓN DE NOTICIAS CON IMÁGENES
+// imports para la seccion de noticias
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
@@ -85,10 +85,10 @@ data class DrawerMenuItem(
 val ElectricBlue = Color(0xFF64B5F6)
 
 val menuItems = listOf(
-    DrawerMenuItem("Juegos de Mesa", Icons.Default.Casino, "juegos", "15000", R.drawable.ic_launcher_foreground),
-    DrawerMenuItem("Accesorios", Icons.Default.Gamepad, "accesorios", "5000", R.drawable.ic_launcher_foreground),
-    DrawerMenuItem("Consolas", Icons.Default.VideogameAsset, "consolas", "300000", R.drawable.ic_launcher_foreground),
-    DrawerMenuItem("Sillas Gamers", Icons.Default.Chair, "sillas", "150000", R.drawable.ic_launcher_foreground),
+    DrawerMenuItem("Juegos de Mesa", Icons.Default.Casino, "juegos", "15000", R.drawable.catan),
+    DrawerMenuItem("Accesorios", Icons.Default.Gamepad, "accesorios", "5000", R.drawable.mause),
+    DrawerMenuItem("Consolas", Icons.Default.VideogameAsset, "consolas", "300000", R.drawable.play),
+    DrawerMenuItem("Sillas Gamers", Icons.Default.Chair, "sillas", "150000", R.drawable.silla),
 )
 
 @Composable
@@ -255,14 +255,14 @@ fun DrawerContent(
 
             item {
                 NavigationDrawerItem(
-                    label = { Text("Mostrar Datos Guardados", color = ElectricBlue) },
+                    label = { Text("Carrito", color = ElectricBlue) },
                     selected = false,
                     onClick = {
                         onItemClick("MuestraDatosScreen", "", "", 0)
                     },
                     icon = {
                         Icon(
-                            Icons.Default.Archive,
+                            Icons.Default.ShoppingCart,
                             contentDescription = "Datos Guardados",
                             tint = ElectricBlue
                         )
@@ -334,9 +334,8 @@ fun DrawerContent(
     }
 }
 
-/* -----------------------------
-   Sección de Noticias (API) con imagen de fondo
------------------------------- */
+
+//Sección de Noticias (API)
 
 data class NewsItem(
     val title: String,
@@ -461,9 +460,8 @@ fun NewsCard(item: NewsItem) {
     }
 }
 
-/* -----------------------------
-   Lógica de datos: Fetch de noticias y og:image
------------------------------- */
+ //Lógica de datos: Fetch de noticias y og:image
+
 
 suspend fun fetchNewsWithImages(query: String): Result<List<NewsItem>> {
     return try {

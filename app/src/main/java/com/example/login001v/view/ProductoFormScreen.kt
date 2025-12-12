@@ -5,6 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import com.example.login001v.data.remote.RetrofitClient
+import com.example.login001v.data.model.Post
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +33,9 @@ fun ProductoFormScreen(
     factory: ProductoViewModelFactory
 ) {
     val viewModel: ProductoViewModel = viewModel(factory = factory)
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
 
     Scaffold(
         topBar = {
@@ -38,7 +47,8 @@ fun ProductoFormScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -72,12 +82,30 @@ fun ProductoFormScreen(
                         precio = precio,
                         idImagen = idImagen
                     )
-                    viewModel.insert(nuevoProducto)
-                    navController.navigate("MuestraDatosScreen")
+                    scope.launch {
+                        viewModel.insert(nuevoProducto)
+                        try {
+                            val response = RetrofitClient.apiService.createPost(
+                                Post(
+                                    userId = 0,
+                                    id = 0,
+                                    title = "Gracias por su compra",
+                                    body = "Compra confirmada"
+                                )
+                            )
+                            Log.d("CompraAPI", "POST /posts -> id=${response.id}, title=${response.title}")
+                            snackbarHostState.showSnackbar("API OK (id=${response.id})")
+                        } catch (_: Exception) {
+                            snackbarHostState.showSnackbar("API falló (se guardó local)")
+                        }
+
+                        snackbarHostState.showSnackbar("Gracias por su compra")
+                        navController.navigate("MuestraDatosScreen")
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Guardar Producto Localmente")
+                Text("Agregar al Carrito")
             }
         }
     }
